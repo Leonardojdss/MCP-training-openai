@@ -1,0 +1,1 @@
+testar ferramentas MCP - npx @modelcontextprotocol/inspector
