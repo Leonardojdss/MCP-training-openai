@@ -4,7 +4,7 @@ import json
 import os
 import random
 
-# Create the MCP server
+# instance the MCP server
 mcp = FastMCP("SSE training OpenAI")
 
 @mcp.tool()

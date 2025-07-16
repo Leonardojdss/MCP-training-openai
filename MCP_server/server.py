@@ -8,7 +8,7 @@ import uvicorn
 from MCP_server.tools.tools import mcp
 
 
-def create_mcp_server(mcp_server: Server, debug: bool = False) -> Starlette:
+def mcp_server_sse(mcp_server: Server, debug: bool = False) -> Starlette:
     """Create a Starlette app with SSE transport for MCP."""
     
     sse = SseServerTransport("/messages/")
@@ -33,23 +33,21 @@ def create_mcp_server(mcp_server: Server, debug: bool = False) -> Starlette:
     # Create Starlette app
     app = Starlette(debug=debug, routes=routes)
     
-    # # Add CORS middleware
-    # app.add_middleware(
-    #     CORSMiddleware,
-    #     allow_origins=["*"],
-    #     allow_credentials=True,
-    #     allow_methods=["*"],
-    #     allow_headers=["*"],
-    # )
+    # CORS middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     
     return app
 
+mcp_server = mcp._mcp_server
+mcp_app = mcp_server_sse(mcp_server, debug=True)
 
-if __name__ == "__main__": 
-
-    mcp_server = mcp._mcp_server
-    mcp_app = create_mcp_server(mcp_server, debug=True)
-    
+if __name__ == "__main__":
     port = 8000
     print(f"Starting MCP server with SSE transport on port {port}...")
     print(f"SSE endpoint available at: http://localhost:{port}/sse")
