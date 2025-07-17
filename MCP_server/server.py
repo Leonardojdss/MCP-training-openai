@@ -5,7 +5,7 @@ from starlette.requests import Request
 from starlette.routing import Mount, Route
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
-from MCP_server.tools.tools import mcp
+from MCP_server.capacities.tools import mcp
 
 
 def mcp_server_sse(mcp_server: Server, debug: bool = False) -> Starlette:

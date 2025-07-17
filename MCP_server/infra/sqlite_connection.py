@@ -1,3 +1,4 @@
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine, Connection
 from sqlalchemy.exc import SQLAlchemyError
@@ -23,6 +24,11 @@ class SQLiteConnection:
         except SQLAlchemyError as e:
             print(f"Erro ao conectar ao banco de dados: {e}")
             return None
+
+    def close(self):
+        if self.conn:
+            self.conn.close()
+            self.conn = None
 
     def execute_query(self, query: str, params: dict = None):
         if not self.conn:
@@ -55,15 +61,14 @@ class SQLiteConnection:
             print(f"Falha no teste de conexão: {e}")
             return False
         
-# # teste de conexão
-# if __name__ == "__main__":
-#     db = SQLiteConnection()
-#     if db.test_connection():
-#         print("Conexão com o banco de dados estabelecida com sucesso.")
-#     else:
-#         print("Falha ao conectar ao banco de dados.")
+# teste de conexão
+if __name__ == "__main__":
+    db = SQLiteConnection()
+    if db.test_connection():
+        print("Conexão com o banco de dados estabelecida com sucesso.")
+    else:
+        print("Falha ao conectar ao banco de dados.")
 
-# # teste de execução de query
-#     query = "SELECT * FROM faturamento_vendas;"
-#     resultados = db.fetch_all(query=query)
-#     print(resultados)
+# teste de execução de query
+    query = "SELECT * FROM faturamento_vendas;"
+    print(db.execute_query(query=query))
